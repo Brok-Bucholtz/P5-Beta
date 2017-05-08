@@ -74,12 +74,12 @@ def test_discriminator(discriminator, tf_module):
         image = tf.placeholder(tf.float32, [None, 28, 28, 3])
 
         output, logits = discriminator(image)
-        _assert_tensor_shape(output, [None, 1], 'Discriminator Training(reuse=Fales) output')
-        _assert_tensor_shape(logits, [None, 1], 'Discriminator Training(reuse=Fales) Logits')
+        _assert_tensor_shape(output, [None, 1], 'Discriminator Training(reuse=false) output')
+        _assert_tensor_shape(logits, [None, 1], 'Discriminator Training(reuse=false) Logits')
         assert mock_variable_scope.called,\
-            'tf.variable_scope not called in Discriminator Training(reuse=Fales)'
+            'tf.variable_scope not called in Discriminator Training(reuse=false)'
         assert mock_variable_scope.call_args == mock.call('discriminator', reuse=False), \
-            'tf.variable_scope called with wrong arguments in Discriminator Training(reuse=Fales)'
+            'tf.variable_scope called with wrong arguments in Discriminator Training(reuse=false)'
 
         mock_variable_scope.reset_mock()
 
@@ -101,9 +101,9 @@ def test_generator(generator, tf_module):
         output = generator(z, out_channel_dim)
         _assert_tensor_shape(output, [None, 28, 28, out_channel_dim], 'Generator output (is_train=True)')
         assert mock_variable_scope.called, \
-            'tf.variable_scope not called in Generator Training(reuse=Fales)'
+            'tf.variable_scope not called in Generator Training(reuse=false)'
         assert mock_variable_scope.call_args == mock.call('generator', reuse=False), \
-            'tf.variable_scope called with wrong arguments in Generator Training(reuse=Fales)'
+            'tf.variable_scope called with wrong arguments in Generator Training(reuse=false)'
 
         mock_variable_scope.reset_mock()
         output = generator(z, out_channel_dim, False)
